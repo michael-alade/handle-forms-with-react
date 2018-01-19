@@ -1,10 +1,10 @@
 import React from 'react'
 
-const StepFour = () => {
+const StepFour = ({ selected, handleSelect }) => {
   return (
     <div className="form-group">
       <div>
-        <select className="select-box">
+        <select onChange={handleSelect} className="select-box" value={selected}>
           <option value=""></option>
           <option value="C1">C1</option>
           <option value="C2">C2</option>
