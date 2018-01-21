@@ -1,11 +1,11 @@
 import React from 'react'
 
-const StepThree = () => {
+const StepThree = ({ handleTextChange, inputField, handleTextCheck }) => {
   return (
     <div className="form-group">
       <div className="input-container">
-        <input placeholder="Type a value" type="text"/>
-        <button>Check</button>
+        <input onChange={handleTextChange} value={inputField} placeholder="Type a value" type="text"/>
+        <button onClick={() => handleTextCheck()}>Check</button>
       </div>
     </div>
   )

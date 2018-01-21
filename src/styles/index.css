@@ -14,6 +14,11 @@ body {
     transition: all .4s ease;
     height: auto;
     padding: 15px; }
+    #form-container .form-box .error-box {
+      margin-bottom: 15px;
+      padding: 15px;
+      color: #fff;
+      background: #ff4141; }
     #form-container .form-box .form-group {
       margin-bottom: 15px;
       padding-bottom: 15px;
