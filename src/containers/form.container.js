@@ -1,101 +1,75 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import StepOne from '../components/stepOne.component'
 import StepTwo from '../components/stepTwo.component'
 import StepThree from '../components/stepThree.component'
 import StepFour from '../components/stepFour.component'
+import ErrorBox from '../components/errorBox.component'
+import { checkIt, submitIt } from '../api'
+import * as actions from '../actions/form.action'
 
 class FormContainer extends Component {
   state = {
-    stepsOpened: [1],
-    formData: {
-      a: [],
-      b: null,
-      text: '',
-      c: ''
-    }
+    textField: ''
   }
 
   handleToggle = (e, checkedToggle) => {
-    const { formData } = this.state
-
-    return this.setState({
-      formData: Object.assign({}, formData, {
-        b: checkedToggle
-      })
-    }, () => {
-      this.handleSteps(2)
-    })
-  }
-
-  handleSteps = (step) => {
-    let { formData } = this.state
-    switch (step) {
-      case 1:
-        if (!formData.a.length) {
-          return this.setState({ stepsOpened: [1] })
-        }
-        return this.setState({ stepsOpened: [1, 2] })
-      case 2:
-        if (!formData.b) {
-          return this.setState({ stepsOpened: [1, 2] })
-        }
-        return this.setState({ stepsOpened: [1, 2, 3] })
-      case 3:
-        return this.setState({ stepsOpened: [1, 2, 3, 4] })
-      case 4:
-        if (formData.c.length) {
-          return this.setState({ stepsOpened: [1, 2, 3, 4, 5] })
-        }
-        return this.setState({ stepsOpened: [1, 2, 3, 4] })
-      default:
-        break;
-    }
+    this.props.handleFormState('b', checkedToggle, 2)
+    return
   }
 
   handleCheckboxSelect = (e, selected) => {
-    let { formData } = this.state
+    let { formData } = this.props
     if (formData.a.includes(selected)) {
       formData.a = formData.a.filter(val => val !== selected)
     } else {
       formData.a.push(selected)
     }
 
-    return this.setState({
-      formData: Object.assign({}, formData, { a: formData.a })
-    }, () => {
-      this.handleSteps(1)
-    })
+    this.props.handleFormState('a', formData.a, 1)
+    return
   }
 
   handleTextCheck = () => {
-    this.handleSteps(3)
-  }
-
-  handleTextChange = (e) => {
-    let { formData } = this.state
-    return this.setState({
-      formData: Object.assign({}, formData, {
-        text: e.target.value
-      })
+    const { textField } = this.state
+    return checkIt(textField).then(() => {
+      this.props.clearError()
+      return this.props.handleFormState('text', textField, 3)
+    }).catch(error => {
+      return this.props.handleError(error.message)
     })
   }
 
+  handleTextChange = (e) => {
+    return this.setState({ textField: e.target.value })
+  }
+
   handleSelect = (e) => {
-    let { formData } = this.state
-    return this.setState({
-      formData: Object.assign({}, formData, {
-        c: e.target.value
-      })
-    }, () => {
-      this.handleSteps(4)
+    this.props.handleFormState('c', e.target.value, 4)
+    return
+  }
+
+  handleSubmit = () => {
+    const { formData } = this.props
+    return submitIt(formData).then(res => {
+      this.props.clearError()
+      return res
+    }).catch(error => {
+      return this.props.handleError(error.message)
     })
   }
 
   render () {
-    let { formData, stepsOpened } = this.state
+    let { formData, stepsOpened, error } = this.props
     return (
       <div id="form-container">
         <div className="form-box">
+          {
+            error &&
+            <ErrorBox
+              error={error}
+            />
+          }
           {
             stepsOpened.includes(1) &&
             <StepOne
@@ -112,7 +86,7 @@ class FormContainer extends Component {
           {
             stepsOpened.includes(3) &&
             <StepThree
-              inputField={formData.text}
+              inputField={this.state.textField}
               handleTextChange={this.handleTextChange}
               handleTextCheck={this.handleTextCheck}
             />
@@ -127,7 +101,7 @@ class FormContainer extends Component {
           {
             stepsOpened.includes(5) &&
             <div className="submit-box">
-              <button type="submit">Submit</button>
+              <button onClick={() => this.handleSubmit()} type="submit">Submit</button>
             </div>
           }
         </div>
@@ -136,4 +110,16 @@ class FormContainer extends Component {
   }
 }
 
-export default FormContainer
+const mapStateToProps = (state) => {
+  return { ...state.formReducer }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearError: () => dispatch(actions.clearError()),
+    handleFormState: (key, value, step) => dispatch(actions.handleFormState(key, value, step)),
+    handleError: (error) => dispatch(actions.handleError(error))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormContainer)

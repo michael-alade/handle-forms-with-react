@@ -17,6 +17,12 @@ body {
     height: auto;
     padding: 15px;
 
+    .error-box {
+      margin-bottom: 15px;
+      padding: 15px;
+      color: #fff;
+      background: rgb(255, 65, 65);
+    }
     .form-group {
       margin-bottom: 15px;
       padding-bottom: 15px;
