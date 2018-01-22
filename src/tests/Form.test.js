@@ -11,11 +11,11 @@ import initialState from '../initialState'
 
 const mockStore = configureStore()
 let store = mockStore(initialState)
-store.replaceReducer(formReducer)
 let wrapper
+
 Enzyme.configure({ adapter: new Adapter() })
 
-describe('HOME COMPONENT', () => {
+describe('FORM COMPONENT', () => {
 
   beforeEach(() => {
     wrapper = mount(<Provider store={store}><FormContainer /></Provider>)
