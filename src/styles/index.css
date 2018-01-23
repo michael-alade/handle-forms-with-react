@@ -19,6 +19,11 @@ body {
       padding: 15px;
       color: #fff;
       background: #ff4141; }
+    #form-container .form-box .success-box {
+      margin-bottom: 15px;
+      padding: 15px;
+      color: #fff;
+      background: #5381ff; }
     #form-container .form-box .form-group {
       margin-bottom: 15px;
       padding-bottom: 15px;

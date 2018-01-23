@@ -12,7 +12,7 @@ describe('STEPONE COMPONENT', () => {
 
   it('should render step one component', () => {
     let wrapper = shallow(<StepOne />)
-    expect(wrapper.length).toEqual(1)
+    return expect(wrapper.length).toEqual(1)
   })
 
   it ('should handle checkbox change', () => {
@@ -20,6 +20,6 @@ describe('STEPONE COMPONENT', () => {
     const wrapper = shallow(<StepOne handleCheckboxSelect={handleCheckboxSelect} />)
     wrapper.find('input#a1').simulate('change')
 
-    expect(handleCheckboxSelect.calledOnce).toEqual(true)
+    return expect(handleCheckboxSelect.calledOnce).toEqual(true)
   })
 })

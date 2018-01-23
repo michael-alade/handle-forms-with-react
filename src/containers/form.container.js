@@ -4,8 +4,7 @@ import StepOne from '../components/stepOne.component'
 import StepTwo from '../components/stepTwo.component'
 import StepThree from '../components/stepThree.component'
 import StepFour from '../components/stepFour.component'
-import ErrorBox from '../components/errorBox.component'
-import { checkIt, submitIt } from '../api'
+import NotificationBox from '../components/notificationBox.component'
 import * as actions from '../actions/form.action'
 
 class FormContainer extends Component {
@@ -32,12 +31,7 @@ class FormContainer extends Component {
 
   handleTextCheck = () => {
     const { textField } = this.state
-    return checkIt(textField).then(() => {
-      this.props.clearError()
-      return this.props.handleFormState('text', textField, 3)
-    }).catch(error => {
-      return this.props.handleError(error.message)
-    })
+    return this.props.checkFormItem(textField)
   }
 
   handleTextChange = (e) => {
@@ -51,23 +45,19 @@ class FormContainer extends Component {
 
   handleSubmit = () => {
     const { formData } = this.props
-    return submitIt(formData).then(res => {
-      this.props.clearError()
-      return res
-    }).catch(error => {
-      return this.props.handleError(error.message)
-    })
+    return this.props.submitForm(formData)
   }
 
   render () {
-    let { formData, stepsOpened, error } = this.props
+    let { formData, stepsOpened, notification, loadingState } = this.props
     return (
       <div id="form-container">
         <div className="form-box">
           {
-            error &&
-            <ErrorBox
-              error={error}
+            notification.show &&
+            <NotificationBox
+              type={notification.type}
+              message={notification.message}
             />
           }
           {
@@ -89,6 +79,7 @@ class FormContainer extends Component {
               inputField={this.state.textField}
               handleTextChange={this.handleTextChange}
               handleTextCheck={this.handleTextCheck}
+              {...this.props}
             />
           }
           {
@@ -101,7 +92,11 @@ class FormContainer extends Component {
           {
             stepsOpened.includes(5) &&
             <div className="submit-box">
-              <button onClick={() => this.handleSubmit()} type="submit">Submit</button>
+              <button onClick={() => this.handleSubmit()} type="submit">
+                { loadingState.state === 'submit' && loadingState.show
+                  ? 'Submitting' : 'Submit'
+                }
+              </button>
             </div>
           }
         </div>
@@ -116,9 +111,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    clearError: () => dispatch(actions.clearError()),
+    checkFormItem: (item) => dispatch(actions.checkFormItem(item)),
+    submitForm: (formData) => dispatch(actions.submitForm(formData)),
     handleFormState: (key, value, step) => dispatch(actions.handleFormState(key, value, step)),
-    handleError: (error) => dispatch(actions.handleError(error))
   }
 }
 

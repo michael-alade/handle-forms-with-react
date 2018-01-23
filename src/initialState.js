@@ -1,6 +1,14 @@
 const initialState = {
   stepsOpened: [1],
-  error: null,
+  notification: {
+    show: false,
+    type: null,
+    message: null
+  },
+  loadingState: {
+    state: null,
+    show: false
+  },
   formData: {
     a: [],
     b: null,

@@ -12,7 +12,7 @@ describe('STEPTWO COMPONENT', () => {
 
   it('should render step two component', () => {
     const wrapper = shallow(<StepTwo />)
-    expect(wrapper.length).toEqual(1)
+    return expect(wrapper.length).toEqual(1)
   })
 
   it ('should render both toggle inactive by default', () => {
@@ -20,7 +20,7 @@ describe('STEPTWO COMPONENT', () => {
     const toggleOne = wrapper.find('input#b1')
     const toggleTwo = wrapper.find('input#b2')
     expect(toggleOne.props().checked).toEqual(false)
-    expect(toggleTwo.props().checked).toEqual(false)
+    return expect(toggleTwo.props().checked).toEqual(false)
   })
 
   it('should untoggle the other if one is toggled', () => {
@@ -28,7 +28,7 @@ describe('STEPTWO COMPONENT', () => {
     const toggleOne = wrapper.find('input#b1')
     const toggleTwo = wrapper.find('input#b2')
     expect(toggleOne.props().checked).toEqual(false)
-    expect(toggleTwo.props().checked).toEqual(true)
+    return expect(toggleTwo.props().checked).toEqual(true)
   })
 
   it ('should handle change when toggle button is clicked', () => {
@@ -41,7 +41,7 @@ describe('STEPTWO COMPONENT', () => {
       />
     )
     wrapper.find('input#b1').simulate('change')
-    expect(handleToggle.calledOnce).toEqual(true)
+    return expect(handleToggle.calledOnce).toEqual(true)
   })
 
 })

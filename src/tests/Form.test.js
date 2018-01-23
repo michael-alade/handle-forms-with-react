@@ -1,5 +1,6 @@
 import React from 'react'
 import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
 import Enzyme, { mount } from 'enzyme'
 import configureStore from 'redux-mock-store'
 import Adapter from 'enzyme-adapter-react-16'
@@ -9,7 +10,8 @@ import StepTwo from '../components/stepTwo.component'
 import formReducer from '../reducers/form.reducer'
 import initialState from '../initialState'
 
-const mockStore = configureStore()
+const middlewares = [thunk]
+const mockStore = configureStore(middlewares)
 let store = mockStore(initialState)
 let wrapper
 
@@ -37,6 +39,6 @@ describe('FORM COMPONENT', () => {
     const reduxState = store.getState()
 
     expect(reduxState.formData.a.includes('A1')).toEqual(true)
-    expect(reduxState.formData.a.includes('A2')).toEqual(true)
+    return expect(reduxState.formData.a.includes('A2')).toEqual(true)
   })
 })

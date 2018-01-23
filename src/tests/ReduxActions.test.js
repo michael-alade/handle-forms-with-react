@@ -1,8 +1,10 @@
 import configureStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import * as actions from '../actions/form.action'
 import initialState from '../initialState'
 
-const mockStore = configureStore()
+const middlewares = [thunk]
+const mockStore = configureStore(middlewares)
 let store
 describe('Form redux actions', () => {
 
@@ -21,29 +23,47 @@ describe('Form redux actions', () => {
         stepsOpened: [1, 2]
       }
     }
-    expect(store.getActions()).toEqual([expectedPayload])
+    return expect(store.getActions()).toEqual([expectedPayload])
   })
 
-  it ('should dispatch handleError', () => {
-    const error = 'Some error'
-    store.dispatch(actions.handleError(error))
+  it('should dispatch handleNotification', () => {
+    const type = 'success', message = 'Successfully sent.'
+    store.dispatch(actions.handleNotification(type, message))
     const expectedPayload = {
-      type: 'HANDLE_ERROR',
+      type: 'HANDLE_NOTIFICATION',
       payload: {
-        error
+        show: true,
+        type,
+        message
       }
     }
-    expect(store.getActions()).toEqual([expectedPayload])
+    return expect(store.getActions()).toEqual([expectedPayload])
   })
 
-  it ('should dispatch clearError to clear error in state', () => {
-    store.dispatch(actions.clearError())
+  it('should dispatch clearNotification to clear notification state', () => {
+    store.dispatch(actions.clearNotification())
     const expectedPayload = {
-      type: 'CLEAR_ERROR',
+      type: 'CLEAR_NOTIFICATION',
       payload: {
-        error: null
+        show: false,
+        type: null,
+        message: null
       }
     }
-    expect(store.getActions()).toEqual([expectedPayload])
+    return expect(store.getActions()).toEqual([expectedPayload])
+  })
+
+  it('should dispatch loadingState', () => {
+    const state = 'check', show = true
+    store.dispatch(actions.loadingState(state, show))
+    const expectedPayload = {
+      type: 'LOADING_STATE',
+      payload: {
+        state,
+        show
+      }
+    }
+
+    return expect(store.getActions()).toEqual([expectedPayload])
   })
 })
