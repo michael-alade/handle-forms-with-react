@@ -18,8 +18,9 @@
     "build-js": "react-scripts build",
     "start": "npm-run-all -p watch-css start-js",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "build": "npm-run-all build-css build-js",
+    "build": "npm-run-all build-css build-js serve-build",
     "test": "react-scripts test --env=jsdom",
+    "serve-build": "./node_modules/.bin/serve ./build",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
@@ -32,6 +33,7 @@
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
     "redux-mock-store": "^1.4.0",
+    "serve": "^6.4.8",
     "sinon": "^4.2.0"
   }
 }
