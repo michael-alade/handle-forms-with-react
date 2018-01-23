@@ -111,7 +111,7 @@ class FormContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { ...state.formReducer }
+  return { ...state }
 }
 
 const mapDispatchToProps = (dispatch) => {

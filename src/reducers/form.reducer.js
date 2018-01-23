@@ -1,13 +1,4 @@
-const initialState = {
-  stepsOpened: [1],
-  error: null,
-  formData: {
-    a: [],
-    b: null,
-    text: '',
-    c: ''
-  }
-}
+import initialState from '../initialState'
 
 const formReducer = (state = initialState, action) => {
   switch (action.type) {
