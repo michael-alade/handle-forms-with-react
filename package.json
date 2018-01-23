@@ -3,14 +3,37 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "node-sass-chokidar": "0.0.3",
+    "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-scripts": "1.1.0"
+    "react-redux": "^5.0.6",
+    "react-scripts": "1.1.0",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build-css": "node-sass-chokidar src/styles -o src/styles",
+    "watch-css": "npm run build-css && node-sass-chokidar src/styles -o src/styles --watch --recursive",
+    "start-js": "react-scripts start",
+    "build-js": "react-scripts build",
+    "start": "npm-run-all -p watch-css start-js",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "build": "npm-run-all build-css build-js serve-build",
     "test": "react-scripts test --env=jsdom",
+    "serve-build": "./node_modules/.bin/serve ./build",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "jest": "^22.1.4",
+    "jest-cli": "^22.1.4",
+    "react-addons-test-utils": "^15.6.2",
+    "react-dom": "^16.2.0",
+    "react-test-renderer": "^16.2.0",
+    "redux-mock-store": "^1.4.0",
+    "serve": "^6.4.8",
+    "sinon": "^4.2.0"
   }
 }
